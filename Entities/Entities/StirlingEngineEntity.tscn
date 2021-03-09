@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Shared/tileset.svg" type="Texture" id=1]
 [ext_resource path="res://Entities/Entities/StirlingEngineEntity.gd" type="Script" id=2]
+[ext_resource path="res://Systems/Power/PowerSource.gd" type="Script" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Work"
@@ -38,13 +39,13 @@ tracks/1/keys = {
 script = ExtResource( 2 )
 
 [node name="EngineBase" type="Sprite" parent="."]
-position = Vector2( 0, -5.33936 )
+position = Vector2( 0, -5.332 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 449, 149, 102, 62 )
 
 [node name="PistonBack" type="Sprite" parent="."]
-position = Vector2( -0.21, -32.37 )
+position = Vector2( -0.21, -34 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 780, 139, 100, 27 )
@@ -56,7 +57,7 @@ region_enabled = true
 region_rect = Rect2( 584, 119, 52, 70 )
 
 [node name="PistonFront" type="Sprite" parent="."]
-position = Vector2( 0, -2.16912 )
+position = Vector2( 0, -4 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 669, 164, 102, 37 )
@@ -69,3 +70,7 @@ polygon = PoolVector2Array( -0.199272, 25.6034, -50.5698, -0.493885, -50.4295, -
 anims/Work = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="PowerSource" type="Node" parent="."]
+script = ExtResource( 3 )
+power_amount = 25.0
