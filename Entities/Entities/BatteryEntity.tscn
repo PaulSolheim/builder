@@ -27,7 +27,6 @@ shader_param/amount = 1.0
 "power_receivers",
 "power_sources",
 ]]
-position = Vector2( 0, -15.5 )
 script = ExtResource( 4 )
 
 [node name="PowerSource" type="Node" parent="."]
@@ -40,17 +39,19 @@ script = ExtResource( 1 )
 power_required = 200.0
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -15.5 )
 texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 339, 119, 102, 82 )
 
 [node name="Indicator" type="Sprite" parent="."]
 material = SubResource( 2 )
-position = Vector2( -24.125, -3 )
+position = Vector2( -24.125, -18.5 )
 scale = Vector2( 0.710937, 0.675676 )
 texture = ExtResource( 5 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2( 0, -15.5 )
 polygon = PoolVector2Array( 49.75, 14.75, 0, 40.75, -50, 15.25, -50, 3.25, -0.25, -21.25, 49.75, 2.25 )
 [connection signal="power_updated" from="PowerSource" to="." method="_on_PowerSource_power_updated"]
 [connection signal="received_power" from="PowerReceiver" to="." method="_on_PowerReceiver_received_power"]

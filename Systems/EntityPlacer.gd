@@ -14,7 +14,8 @@ var _current_deconstruct_location := Vector2.ZERO
 
 onready var Library := {
 	"StirlingEngine": preload("res://Entities/Blueprints/StirlingEngineBlueprint.tscn").instance(),
-	"Wire": preload("res://Entities/Blueprints/WireBlueprint.tscn").instance()
+	"Wire": preload("res://Entities/Blueprints/WireBlueprint.tscn").instance(),
+	"Battery": preload("res://Entities/Blueprints/BatteryBlueprint.tscn").instance()
 }
 
 onready var _deconstruct_timer := $Timer
@@ -22,10 +23,12 @@ onready var _deconstruct_timer := $Timer
 func _ready() -> void:
 	Library[Library.StirlingEngine] = preload("res://Entities/Entities/StirlingEngineEntity.tscn")
 	Library[Library.Wire] = preload("res://Entities/Entities/WireEntity.tscn")
+	Library[Library.Battery] = preload("res://Entities/Entities/BatteryEntity.tscn")
 
 func _exit_tree() -> void:
 	Library.StirlingEngine.queue_free()
 	Library.Wire.queue_free()
+	Library.Battery.queue_free()
 
 func _process(_delta: float) -> void:
 	var has_placeable_blueprint: bool = _blueprint and _blueprint.placeable
@@ -70,6 +73,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if cell_is_occupied and is_close_to_player:
 			_deconstruct(global_mouse_position, cellv)
 	
+	elif event.is_action_pressed("rotate_blueprint") and _blueprint:
+		_blueprint.rotate_blueprint()
+	
 	elif event is InputEventMouseMotion:
 		if cellv != _current_deconstruct_location:
 			_abort_decontruct()
@@ -91,6 +97,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			remove_child(_blueprint)
 		# This is the only difference: we assign the `WireBlueprint` to the `_blueprint` variable variable
 		_blueprint = Library.Wire
+		add_child(_blueprint)
+		_move_blueprint_in_world(cellv)
+	elif event.is_action_pressed("quickbar_3"):
+		if _blueprint:
+			remove_child(_blueprint)
+		# This is the only difference: we assign the `WireBlueprint` to the `_blueprint` variable variable
+		_blueprint = Library.Battery
 		add_child(_blueprint)
 		_move_blueprint_in_world(cellv)
 
