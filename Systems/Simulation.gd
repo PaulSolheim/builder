@@ -12,10 +12,11 @@ onready var _ground := $GameWorld/GroundTiles
 onready var _entity_placer := $GameWorld/YSort/EntityPlacer
 onready var _player := $GameWorld/YSort/Player
 onready var _flat_entities := $GameWorld/FlatEntities
+onready var _gui := $CanvasLayer/GUI
 
 func _ready() -> void:
 	$Timer.start(simulation_speed)
-	_entity_placer.setup(_tracker, _ground, _flat_entities, _player)
+	_entity_placer.setup(_gui, _tracker, _ground, _flat_entities, _player)
 	
 	var barriers: Array = _ground.get_used_cells_by_id(BARRIER_ID)
 	for cellv in barriers:

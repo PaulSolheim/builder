@@ -19,13 +19,13 @@ region_enabled = true
 region_rect = Rect2( 950, 134, 31, 17 )
 
 [node name="E" type="Sprite" parent="."]
-position = Vector2( -45, 55 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 899, 179, 31, 17 )
-
-[node name="S" type="Sprite" parent="."]
 position = Vector2( 45, 55 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 950, 179, 31, 17 )
+
+[node name="S" type="Sprite" parent="."]
+position = Vector2( -45, 55 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 899, 179, 31, 17 )

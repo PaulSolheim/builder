@@ -37,6 +37,7 @@ output_direction = 4
 [node name="PowerReceiver" type="Node" parent="."]
 script = ExtResource( 1 )
 power_required = 200.0
+input_direction = 11
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -15.5 )

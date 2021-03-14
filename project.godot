@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Systems/EntityTracker.gd"
 }, {
+"base": "HBoxContainer",
+"class": "InventoryBar",
+"language": "GDScript",
+"path": "res://GUI/InventoryBar.gd"
+}, {
+"base": "Panel",
+"class": "InventoryPanel",
+"language": "GDScript",
+"path": "res://GUI/InventoryPanel.gd"
+}, {
 "base": "Node",
 "class": "PowerReceiver",
 "language": "GDScript",
@@ -58,6 +68,8 @@ _global_script_class_icons={
 "BlueprintEntity": "",
 "Entity": "",
 "EntityTracker": "",
+"InventoryBar": "",
+"InventoryPanel": "",
 "PowerReceiver": "",
 "PowerSource": "",
 "PowerSystem": "",
@@ -75,11 +87,16 @@ config/icon="res://icon.png"
 [autoload]
 
 Events="*res://Autoload/Events.gd"
+Library="*res://Autoload/Library.gd"
 
 [display]
 
 window/size/width=1920
 window/size/height=1080
+
+[game_gui]
+
+inventory_size=75.0
 
 [input]
 
