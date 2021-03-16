@@ -11,6 +11,9 @@ var _current_deconstruct_location := Vector2.ZERO
 var _flat_entities: YSort
 var _gui: Control
 
+## The ground item packed scene we instance when dropping items
+var GroundItemScene := preload("res://Entities/GroundItem.tscn")
+
 onready var _deconstruct_timer := $Timer
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -50,8 +53,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_move_blueprint_in_world(cellv)
 
 	elif event.is_action_pressed("drop") and _gui.blueprint:
-		remove_child(_gui.blueprint)
-		_gui.blueprint = null
+		if is_on_ground:
+			_drop_entity(_gui.blueprint, global_mouse_position)
+			_gui.blueprint = null
 	
 	elif event.is_action_pressed("rotate_blueprint") and _gui.blueprint:
 		_gui.blueprint.rotate_blueprint()
@@ -132,6 +136,16 @@ func _deconstruct(event_position: Vector2, cellv: Vector2) -> void:
 
 func _finish_deconstruct(cellv: Vector2) -> void:
 	var entity := _tracker.get_entity_at(cellv)
+	
+	# Get the entity's name so we can check if we have access to a blueprint.
+	var entity_name := Library.get_entity_name_from(entity)
+	# We convert the map position to a global position.
+	var location := map_to_world(cellv)
+	# If we do have a blueprint, we get it as a packed scene.
+	if Library.blueprints.has(entity_name):    
+		var Blueprint: PackedScene = Library.blueprints[entity_name]
+		_drop_entity(Blueprint.instance(), location)
+	
 	_tracker.remove_entity(cellv)
 	_update_neighboring_flat_entities(cellv)
 
@@ -166,3 +180,12 @@ func _update_neighboring_flat_entities(cellv: Vector2) -> void:
 		if object and object is WireEntity:
 			var tile_directions := _get_powered_neighbors(key)
 			WireBlueprint.set_sprite_for_direction(object.sprite, tile_directions)
+
+## Creates a new ground item with the given blueprint and sets it up at the
+## deconstructed entity's location.
+func _drop_entity(entity: BlueprintEntity, location: Vector2) -> void:
+	# We instance a new ground item, add it, and set it up
+	var ground_item := GroundItemScene.instance()
+	add_child(ground_item)
+	ground_item.setup(entity, location)
+
