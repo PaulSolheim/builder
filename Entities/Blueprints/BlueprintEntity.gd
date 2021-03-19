@@ -4,6 +4,10 @@ extends Node2D
 export var placeable := true
 export var stack_size := 1
 
+## Provides a field for information about the blueprint item. What it is and what
+## it is used for.
+export(String, MULTILINE) var description := ""
+
 var stack_count := 1
 
 onready var _power_indicator := find_node("PowerDirection")

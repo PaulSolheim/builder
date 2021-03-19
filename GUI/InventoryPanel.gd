@@ -48,54 +48,55 @@ func _gui_input(event: InputEvent) -> void:
 	var left_click := event.is_action_pressed("left_click")
 	var right_click := event.is_action_pressed("right_click")
 	
-	if not (left_click or right_click):
-		return
-	
-	if gui.blueprint:
-		var blueprint_name := Library.get_entity_name_from(gui.blueprint)
-		
-		if is_instance_valid(held_item):
-			var held_item_name := Library.get_entity_name_from(held_item)
-			var item_is_same_type: bool = held_item_name == blueprint_name
+	if left_click or right_click:
+		if gui.blueprint:
+			var blueprint_name := Library.get_entity_name_from(gui.blueprint)
 			
-			var stack_has_space: bool = held_item.stack_count < held_item.stack_size
-			if item_is_same_type and stack_has_space:
-				# If the player left-clicked, we merge the mouse's entire stack with this one.
-				if left_click:
-					_stack_items()
-				# With a right-click, we merge half of the mouse's stack with this one.
-				elif right_click:
-					_stack_items(true)
-			# if the items are not the same name or there is no space, we swap the two items,
-			# putting the panel's in the mouse and the mouse's in the panel.
-			else:
-				if left_click:
-					_swap_items()
-		# If this inventory slot is empty
-		else:
-			# If the player left-clicks on the slot, we put the item in the slot.
-			if left_click:
-				_grab_item()
-			
-			# If the player right-clicks, we either put half the mouse's stack in the slot
-			# or put the mouse's item in the slot if it can't stack.
-			elif right_click:
-				if gui.blueprint.stack_count > 1:
-					_grab_split_items()
+			if is_instance_valid(held_item):
+				var held_item_name := Library.get_entity_name_from(held_item)
+				var item_is_same_type: bool = held_item_name == blueprint_name
+				
+				var stack_has_space: bool = held_item.stack_count < held_item.stack_size
+				if item_is_same_type and stack_has_space:
+					# If the player left-clicked, we merge the mouse's entire stack with this one.
+					if left_click:
+						_stack_items()
+					# With a right-click, we merge half of the mouse's stack with this one.
+					elif right_click:
+						_stack_items(true)
+				# if the items are not the same name or there is no space, we swap the two items,
+				# putting the panel's in the mouse and the mouse's in the panel.
 				else:
-					_grab_item()
-	
-	# If the mouse isn't holding any item, but there is an item in the slot.
-	elif is_instance_valid(held_item):
-		# On left-click, we put the slot's item in the mouse's inventory.
-		if left_click:
-			_release_item()
-		# On right-click, we either put the item in the mouse's inventory or split the stack.
-		elif right_click:
-			if held_item.stack_count == 1:
-				_release_item()
+					if left_click:
+						_swap_items()
+			# If this inventory slot is empty
 			else:
-				_split_items()
+				# If the player left-clicks on the slot, we put the item in the slot.
+				if left_click:
+					_grab_item()
+				
+				# If the player right-clicks, we either put half the mouse's stack in the slot
+				# or put the mouse's item in the slot if it can't stack.
+				elif right_click:
+					if gui.blueprint.stack_count > 1:
+						_grab_split_items()
+					else:
+						_grab_item()
+		
+		# If the mouse isn't holding any item, but there is an item in the slot.
+		elif is_instance_valid(held_item):
+			# On left-click, we put the slot's item in the mouse's inventory.
+			if left_click:
+				_release_item()
+			# On right-click, we either put the item in the mouse's inventory or split the stack.
+			elif right_click:
+				if held_item.stack_count == 1:
+					_release_item()
+				else:
+					_split_items()
+	# Hover over entity, possibly show tooltip.
+	elif event is InputEventMouseMotion and is_instance_valid(held_item):
+		Events.emit_signal("hovered_over_entity", held_item)
 
 func _stack_items(split := false) -> void:
 	# We first calculate the smaller number between half the mouse's stack and the amount of space

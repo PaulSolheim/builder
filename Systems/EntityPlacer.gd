@@ -51,7 +51,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		if has_placeable_blueprint:
 			_move_blueprint_in_world(cellv)
-
+		else:
+			_update_hover(cellv)
+	
 	elif event.is_action_pressed("drop") and _gui.blueprint:
 		if is_on_ground:
 			_drop_entity(_gui.blueprint, global_mouse_position)
@@ -188,4 +190,31 @@ func _drop_entity(entity: BlueprintEntity, location: Vector2) -> void:
 	var ground_item := GroundItemScene.instance()
 	add_child(ground_item)
 	ground_item.setup(entity, location)
+
+## Marks the `cell` as hovered if it's within the player's range.
+func _update_hover(cellv: Vector2) -> void:
+	var is_close_to_player := (
+		get_global_mouse_position().distance_to(_player.global_position)
+		< MAXIMUM_WORK_DISTANCE
+	)
+	
+	# If the cell contains an entity and it's in range, we mark it as hovered.
+	if _tracker.is_cell_occupied(cellv) and is_close_to_player:
+		_hover_entity(cellv)
+	else:
+		_clear_hover_entity(cellv)
+	
+
+## Marks the `cellv`'s entity as hovered and emits the `hovered_over_entity` 
+## signal.
+func _hover_entity(cellv: Vector2) -> void:
+	var entity: Node2D = _tracker.get_entity_at(cellv)
+	Events.emit_signal("hovered_over_entity", entity)
+
+## Clears any hovered entity and signals the tooltip that we have nothing
+## under the mouse.
+func _clear_hover_entity(cellv: Vector2) -> void:
+	Events.emit_signal("hovered_over_entity", null)
+
+
 

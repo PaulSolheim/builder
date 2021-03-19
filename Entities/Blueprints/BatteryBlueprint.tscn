@@ -6,7 +6,8 @@
 
 [node name="BatteryBlueprint" type="Node2D"]
 script = ExtResource( 3 )
-stack_size = 8
+stack_size = 50
+description = "Stores power."
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -13.5 )
