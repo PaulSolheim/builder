@@ -1,0 +1,105 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://GUI/Inventory/InventoryBar.gd" type="Script" id=1]
+[ext_resource path="res://Shared/symbols.svg" type="Texture" id=2]
+[ext_resource path="res://GUI/Inventory/InventoryPanel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GUI/Inventory/InventoryBar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://GUI/GUISprite.gd" type="Script" id=5]
+[ext_resource path="res://Entities/Entities/ElectricFurnaceGUI.gd" type="Script" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float fill_amount : hint_range(0, 1.0) = 0.0;
+// The position in pixels in the texture where the region begins.
+uniform vec2 region_position;
+// The number of pixels in the texture region.
+uniform vec2 region_size;
+
+void fragment() {
+    // We first sample our node's texture.
+  vec4 color = texture(TEXTURE, UV);
+    
+    // We request the texture's size. We can use this multiplied by the `UV` to 
+  // figure out where in the texture we are currently at, in pixels.
+  vec2 texture_size = vec2(textureSize(TEXTURE, 0));
+
+    // We calculate the bottom-right end of the region to use to compare it to.
+  vec2 region_end = region_position + region_size;
+
+    // We use the `step()` function to calculate how much of the sprite's UV
+  // map should be filled.
+  //
+  // If the pixel we are at in the texture is greater than the pixel value of the
+  // end of the region, then it returns 1. Otherwise, it returns 0.
+  float pixel_fill = step(UV.x * texture_size.x, fill_amount * region_end.x);
+
+    COLOR = clamp(color + (color * pixel_fill), 0, 1);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/fill_amount = 0.0
+shader_param/region_position = Vector2( 10, 10 )
+shader_param/region_size = Vector2( 50, 50 )
+
+[node name="ElectricFurnaceGUI" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 4
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 63.0
+margin_bottom = 55.0
+
+[node name="InputInventoryBar" type="HBoxContainer" parent="HBoxContainer" instance=ExtResource( 4 )]
+margin_bottom = 50.0
+size_flags_horizontal = 8
+custom_constants/separation = 10
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+InventoryPanelScene = ExtResource( 3 )
+slot_count = 1
+item_filters = "Ore Lumber"
+
+[node name="GUISprite" type="Control" parent="HBoxContainer"]
+material = SubResource( 2 )
+margin_left = 4.0
+margin_right = 54.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_vertical = 4
+script = ExtResource( 5 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 10, 10, 50, 50 )
+
+[node name="OutputInventoryBar" type="HBoxContainer" parent="HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 58.0
+margin_top = 25.0
+margin_right = 58.0
+margin_bottom = 25.0
+size_flags_vertical = 4
+custom_constants/separation = 10
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+InventoryPanelScene = ExtResource( 3 )
+slot_count = 1
+item_filters = "NIL"
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="inventory_changed" from="HBoxContainer/InputInventoryBar" to="." method="_on_InputInventoryBar_inventory_changed"]

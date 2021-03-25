@@ -6,6 +6,7 @@ signal held_item_changed(panel, item)
 var held_item: BlueprintEntity setget _set_held_item
 
 var gui: Control
+var _filter_list := []
 
 onready var count_label := $Label
 
@@ -16,8 +17,9 @@ func _ready() -> void:
 	rect_min_size = Vector2(panel_size, panel_size)
 	rect_size = rect_min_size
 
-func setup(_gui: Control) -> void:
+func setup(_gui: Control, filter_list := []) -> void:
 	gui = _gui
+	_filter_list = filter_list
 
 func _set_held_item(value: BlueprintEntity) -> void:
 	if is_instance_valid(held_item) and held_item.get_parent() == self:
@@ -67,17 +69,17 @@ func _gui_input(event: InputEvent) -> void:
 				# if the items are not the same name or there is no space, we swap the two items,
 				# putting the panel's in the mouse and the mouse's in the panel.
 				else:
-					if left_click:
+					if left_click and Library.is_valid_filter(_filter_list, held_item_name):
 						_swap_items()
 			# If this inventory slot is empty
 			else:
 				# If the player left-clicks on the slot, we put the item in the slot.
-				if left_click:
+				if left_click and Library.is_valid_filter(_filter_list, blueprint_name):
 					_grab_item()
 				
 				# If the player right-clicks, we either put half the mouse's stack in the slot
 				# or put the mouse's item in the slot if it can't stack.
-				elif right_click:
+				elif right_click and Library.is_valid_filter(_filter_list, blueprint_name):
 					if gui.blueprint.stack_count > 1:
 						_grab_split_items()
 					else:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Shared/Tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://Systems/EntityPlacer.gd" type="Script" id=5]
 [ext_resource path="res://GUI/GUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Entities/Entities/StoneEntity.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Entities/Entities/BoulderEntity.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Entities/Entities/TreeEntity.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Entities/Entities/OreBoulderEntity.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Entities/Entities/ChestEntity.tscn" type="PackedScene" id=11]
+[ext_resource path="res://default_env.tres" type="Environment" id=12]
 
 [node name="Simulation" type="Node"]
 script = ExtResource( 3 )
@@ -45,6 +50,42 @@ position = Vector2( -206.178, 180.584 )
 [node name="BranchesEntity4" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
 position = Vector2( 244.561, 106.484 )
 
+[node name="BranchesEntity5" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 268.345, 256.324 )
+
+[node name="BranchesEntity6" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 349.211, 370.488 )
+
+[node name="BranchesEntity7" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 411.05, 472.76 )
+
+[node name="BranchesEntity8" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( -350.043, 341.947 )
+
+[node name="BranchesEntity9" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( -492.748, 320.541 )
+
+[node name="BranchesEntity10" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( -397.611, 415.678 )
+
+[node name="BranchesEntity11" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 51.9094, -252.657 )
+
+[node name="BranchesEntity12" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 265.967, -250.278 )
+
+[node name="BranchesEntity13" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 342.076, -214.602 )
+
+[node name="BranchesEntity14" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 389.644, -169.412 )
+
+[node name="BranchesEntity15" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 506.187, -131.358 )
+
+[node name="BranchesEntity16" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 4 )]
+position = Vector2( 503.808, 180.215 )
+
 [node name="StoneEntity" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 7 )]
 position = Vector2( 439.82, 244.659 )
 
@@ -57,6 +98,146 @@ position = Vector2( 97.5807, 120.208 )
 [node name="StoneEntity4" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 7 )]
 position = Vector2( 400.222, 117.38 )
 
+[node name="StoneEntity5" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 7 )]
+position = Vector2( 414.492, -91.9205 )
+
+[node name="StoneEntity6" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 7 )]
+position = Vector2( -170.598, -129.975 )
+
+[node name="BoulderEntity" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 8 )]
+position = Vector2( -36.7695, 193.747 )
+
+[node name="BoulderEntity2" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 8 )]
+position = Vector2( 286.695, 562.401 )
+
+[node name="BoulderEntity3" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 8 )]
+position = Vector2( 258.154, 683.701 )
+
+[node name="TreeEntity" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 651.952, 214.96 )
+
+[node name="TreeEntity2" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 152.735, 67.8822 )
+
+[node name="TreeEntity3" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 596.798, 497.803 )
+
+[node name="TreeEntity4" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 800.445, 436.992 )
+
+[node name="TreeEntity5" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 1387.91, 377.532 )
+
+[node name="TreeEntity6" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 151.138, -240.856 )
+
+[node name="TreeEntity7" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( -521.954, 99.2571 )
+
+[node name="TreeEntity8" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( -736.011, 172.988 )
+
+[node name="TreeEntity9" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( -909.635, 244.34 )
+
+[node name="TreeEntity10" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( -600.441, 201.529 )
+
+[node name="TreeEntity11" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( -774.066, 265.746 )
+
+[node name="TreeEntity12" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 707.687, 505.966 )
+
+[node name="TreeEntity13" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 833.743, 548.778 )
+
+[node name="TreeEntity14" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 631.578, 574.94 )
+
+[node name="TreeEntity15" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 9 )]
+position = Vector2( 750.499, 598.724 )
+
+[node name="OreBoulderEntity" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -197.408, 73.7308 )
+
+[node name="OreBoulderEntity2" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -442.385, 154.597 )
+
+[node name="OreBoulderEntity3" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -76.1088, 516.116 )
+
+[node name="OreBoulderEntity4" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 530.387, 675.47 )
+
+[node name="OreBoulderEntity5" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 680.227, 644.55 )
+
+[node name="OreBoulderEntity6" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 625.524, 751.579 )
+
+[node name="OreBoulderEntity7" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 887.149, 61.8389 )
+
+[node name="OreBoulderEntity8" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 996.556, 116.542 )
+
+[node name="OreBoulderEntity9" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 948.988, 185.517 )
+
+[node name="OreBoulderEntity10" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1048.88, 228.328 )
+
+[node name="OreBoulderEntity11" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1124.99, 152.219 )
+
+[node name="OreBoulderEntity12" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1151.15, 228.328 )
+
+[node name="OreBoulderEntity13" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1115.48, 525.63 )
+
+[node name="OreBoulderEntity14" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1184.45, 456.656 )
+
+[node name="OreBoulderEntity15" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 1279.59, 463.791 )
+
+[node name="OreBoulderEntity16" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 73.7311, 682.605 )
+
+[node name="OreBoulderEntity17" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -30.9192, 665.956 )
+
+[node name="OreBoulderEntity18" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -111.785, 627.902 )
+
+[node name="OreBoulderEntity19" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -190.273, 551.793 )
+
+[node name="OreBoulderEntity20" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -311.572, 520.873 )
+
+[node name="OreBoulderEntity21" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -73.7304, -185.516 )
+
+[node name="OreBoulderEntity22" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -297.301, -76.1091 )
+
+[node name="OreBoulderEntity23" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -54.7032, -99.8932 )
+
+[node name="OreBoulderEntity24" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( -126.056, -54.7033 )
+
+[node name="OreBoulderEntity25" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 10 )]
+position = Vector2( 444.764, 825.31 )
+
+[node name="Tween" type="Tween" parent="GameWorld/YSort/EntityPlacer"]
+
+[node name="ChestEntity" parent="GameWorld/YSort/EntityPlacer" instance=ExtResource( 11 )]
+position = Vector2( 347.249, 59.4604 )
+
 [node name="Player" parent="GameWorld/YSort" instance=ExtResource( 2 )]
 position = Vector2( 122.317, 324.124 )
 
@@ -66,9 +247,10 @@ position = Vector2( 122.317, 324.124 )
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource( 6 )]
 debug_items = {
-"Battery": 12,
-"Ingot": 10,
-"StirlingEngine": 12,
-"Wire": 1
+"ElectricFurnace": 1,
+"Furnace": 1
 }
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 12 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

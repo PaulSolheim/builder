@@ -4,9 +4,17 @@ extends HBoxContainer
 export var InventoryPanelScene: PackedScene
 export var slot_count := 10
 
+## A textual representation of the possible items or categories of items the
+## panels can accept, separated by spaces.
+export var item_filters := ""
+## The list split into an array of names. The second parameter prevents us from
+## having empty strings ("") in the array.
+onready var _filter_list := item_filters.split(" ", false)
+
 signal inventory_changed(panel, held_item)
 
 var panels := []
+var setup := false
 
 func _ready() -> void:
 	_make_panels()
@@ -18,10 +26,15 @@ func _make_panels() -> void:
 		panels.append(panel)
 
 func setup(gui: Control) -> void:
+	if setup:
+		return
+	
+	setup = true
+	
 	# For each panel we've created in '_ready()', we forward the reference to the gui node
 	# and connect to their signal.
 	for panel in panels:
-		panel.setup(gui)
+		panel.setup(gui, _filter_list)
 		panel.connect("held_item_changed", self, "_on_Panel_held_item_changed")
 
 # Bubbles up the signal from the inventory bar up to the inventory window.
@@ -43,6 +56,11 @@ func find_panels_with(item_id: String) -> Array:
 ## true if it succeeds.
 func add_to_first_available_inventory(item: BlueprintEntity) -> bool:
 	var item_name := Library.get_entity_name_from(item)
+	
+	# We provide the filter list and the name of the item to a special function
+	# in `Library` to report on whether this is a valid item for the bar.
+	if not Library.is_valid_filter(_filter_list, item_name):
+		return false
 	
 	for panel in panels:
 		# If the panel already has an item and its name matches that of the item
@@ -76,3 +94,19 @@ func add_to_first_available_inventory(item: BlueprintEntity) -> bool:
 	# the item. Report as much.
 	return false
 
+## Returns the combined inventory of all inventory panels.
+func get_inventory() -> Array:
+	var output := []
+	for panel in panels:
+		if panel.held_item:
+			output.push_back(panel.held_item)
+	
+	return output
+
+## When we consume an item like fuel, we need a way to make sure the stack count
+## is up to date.
+## this helper function will keep the label up to date on its panel children.
+func update_labels() -> void:
+	for panel in panels:
+		if panel.held_item:
+			panel._update_label()

@@ -51,3 +51,16 @@ func _find_entities_in(path: String) -> void:
 				)
 		filename = directory.get_next()
 
+## Returns `true` if the provided item matches the provided filter array.
+func is_valid_filter(filter_list: Array, item_name: String) -> bool:
+	# If the filter list is empty, then it's automatically allowed.
+	# Otherwise, we check first if the item is explicitly listed in the list.
+	if filter_list.empty() or item_name in filter_list:
+		return true
+	
+	# If it's not, we check any listed item categories in the filter list and if
+	# there's one defined, we look it up in the recipes.
+	if filter_list.has("Fuels") and Recipes.Fuels.has(item_name):
+		return true
+	
+	return false

@@ -1,0 +1,155 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Shared/symbols.svg" type="Texture" id=1]
+[ext_resource path="res://GUI/Inventory/InventoryPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GUI/Inventory/InventoryBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GUI/GUISprite.gd" type="Script" id=4]
+[ext_resource path="res://GUI/Inventory/InventoryBar.gd" type="Script" id=5]
+[ext_resource path="res://Entities/Entities/FurnaceGUI.gd" type="Script" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "// As with all 2D shaders, we must define a shader type of `canvas_item`.
+shader_type canvas_item;
+
+// This exported value ranges from 0 to 1 and represent how full the bar should be.
+uniform float fill_amount : hint_range(0, 1.0) = 0.0;
+
+// The `fragment()` function gets called once for each fragment (pixel or 
+// part of a pixel) drawn by the shader.
+void fragment() {
+    // Get the node's `modulate` color as the base for the bar.
+  vec4 color = MODULATE;
+    
+    // Use the step() function to calculate how much of the sprite's UV
+  // map should be filled.
+  // If `1.0 - fill_amount` is greater than the current vertical UV value,
+  // then the function returns 1.0. Otherwise, it returns 0.0.
+  float pixel_fill = step(1.0 - fill_amount, UV.y);
+    
+    // Set the output fragment's color to the modulate color, and double the 
+  // color where `pixel_fill` is 1. We clamp it between 0 and 1 so it sits 
+    // in the standard RGB color format instead of HDR colors.
+  COLOR = clamp(color + (color * pixel_fill), 0, 1);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/fill_amount = 0.0
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float fill_amount : hint_range(0, 1.0) = 0.0;
+// The position in pixels in the texture where the region begins.
+uniform vec2 region_position;
+// The number of pixels in the texture region.
+uniform vec2 region_size;
+
+void fragment() {
+    // We first sample our node's texture.
+  vec4 color = texture(TEXTURE, UV);
+    
+    // We request the texture's size. We can use this multiplied by the `UV` to 
+  // figure out where in the texture we are currently at, in pixels.
+  vec2 texture_size = vec2(textureSize(TEXTURE, 0));
+
+    // We calculate the bottom-right end of the region to use to compare it to.
+  vec2 region_end = region_position + region_size;
+
+    // We use the `step()` function to calculate how much of the sprite's UV
+  // map should be filled.
+  //
+  // If the pixel we are at in the texture is greater than the pixel value of the
+  // end of the region, then it returns 1. Otherwise, it returns 0.
+  float pixel_fill = step(UV.x * texture_size.x, fill_amount * region_end.x);
+
+    COLOR = clamp(color + (color * pixel_fill), 0, 1);
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/fill_amount = 0.0
+shader_param/region_position = Vector2( 10, 10 )
+shader_param/region_size = Vector2( 50, 50 )
+
+[node name="FurnaceGUI" type="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 4
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 74.0
+margin_bottom = 55.0
+custom_constants/separation = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 9.0
+margin_bottom = 50.0
+custom_constants/separation = 5
+
+[node name="InputInventoryBar" parent="HBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_left = 9.0
+margin_right = 9.0
+size_flags_horizontal = 8
+slot_count = 1
+item_filters = "Ore Lumber"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 5.0
+margin_right = 9.0
+margin_bottom = 5.0
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+modulate = Color( 0.188235, 0.462745, 1, 1 )
+material = SubResource( 2 )
+margin_right = 5.0
+rect_min_size = Vector2( 5, 0 )
+size_flags_vertical = 3
+
+[node name="FuelInventoryBar" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 9.0
+margin_right = 9.0
+custom_constants/separation = 10
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+InventoryPanelScene = ExtResource( 2 )
+slot_count = 1
+item_filters = "Fuels"
+
+[node name="GUISprite" type="Control" parent="HBoxContainer"]
+material = SubResource( 4 )
+margin_left = 14.0
+margin_top = -1.0
+margin_right = 64.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_vertical = 4
+script = ExtResource( 4 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 10, 10, 50, 50 )
+
+[node name="OutputInventoryBar" parent="HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 69.0
+margin_top = 25.0
+margin_right = 69.0
+margin_bottom = 25.0
+size_flags_vertical = 4
+slot_count = 1
+item_filters = "NIL"
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="inventory_changed" from="HBoxContainer/VBoxContainer/InputInventoryBar" to="." method="_on_InputInventoryBar_inventory_changed"]
+[connection signal="inventory_changed" from="HBoxContainer/VBoxContainer/HBoxContainer/FuelInventoryBar" to="." method="_on_FuelInventoryBar_inventory_changed"]

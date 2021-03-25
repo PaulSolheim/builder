@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Shared/tileset.svg" type="Texture" id=1]
+[ext_resource path="res://Entities/Entities/OreBoulderEntity.gd" type="Script" id=2]
+
+[node name="OreBoulderEntity" type="StaticBody2D"]
+script = ExtResource( 2 )
+deconstruct_filter = "Pickaxe"
+pickup_count = 10
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -18 )
+region_enabled = true
+region_rect = Rect2( 358, 790, 73, 73 )
+
+[node name="CollisionPolygon2D1" type="CollisionPolygon2D" parent="."]
+visible = false
+polygon = PoolVector2Array( 38.3899, -3.75303, 38.9512, 1.57866, 5.83855, 15.3288, -12.4015, 16.1707, -39.0599, 0.736816, -37.9375, -7.40104, -0.335007, -14.1358 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+visible = false
+polygon = PoolVector2Array( 35.3032, -0.66626, 25.201, 16.1707, -3.42177, 18.135, -18.0138, 16.1707, -36.2538, 1.57866, -34.8507, -4.59488, 0.78746, -12.4521 )

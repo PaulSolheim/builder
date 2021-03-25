@@ -1,0 +1,133 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Shared/tileset.svg" type="Texture" id=1]
+[ext_resource path="res://Systems/WorkComponent.gd" type="Script" id=2]
+[ext_resource path="res://Systems/Power/PowerReceiver.gd" type="Script" id=3]
+[ext_resource path="res://Systems/GUIComponent.gd" type="Script" id=4]
+[ext_resource path="res://Entities/Entities/ElectricFurnaceGUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/Entities/ElectricFurnaceEntity.gd" type="Script" id=6]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.327217, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 2
+emission_box_extents = Vector3( 12, 2.5, 1 )
+flag_disable_z = true
+direction = Vector3( -1, -0.175, 0 )
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 67.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+color_ramp = SubResource( 2 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "Shutdown"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Particles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Vents:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1.61961, 0.780392, 0.270588, 1 ), Color( 1.62, 0.78, 0.27, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Work"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Vents:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1.62, 0.78, 0.27, 0 ), Color( 1.61961, 0.780392, 0.270588, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[node name="ElectricFurnaceEntity" type="StaticBody2D" groups=[
+"gui_entities",
+"power_receivers",
+"workers",
+]]
+script = ExtResource( 6 )
+
+[node name="PowerReceiver" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="GUIComponent" type="Node" parent="."]
+script = ExtResource( 4 )
+GuiWindow = ExtResource( 5 )
+
+[node name="WorkComponent" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -25 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 339, 229, 102, 102 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 49.4886, -0.558167, -0.278305, 24.6403, -49.1002, 0.701752, -49.7302, -8.43268, 0.351654, -33.0011, 49.1736, -8.43268 )
+
+[node name="Vents" type="Node2D" parent="."]
+modulate = Color( 1.62, 0.78, 0.27, 0 )
+
+[node name="FrontVents" type="Sprite" parent="Vents"]
+position = Vector2( -28.1764, -10.9134 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 236, 279, 32, 30 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+modulate = Color( 2, 1.07, 0.08, 1 )
+position = Vector2( -28.8, -11.8 )
+emitting = false
+process_material = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Shutdown = SubResource( 4 )
+anims/Work = SubResource( 5 )
+[connection signal="received_power" from="PowerReceiver" to="." method="_on_PowerReceiver_received_power"]
+[connection signal="gui_opened" from="GUIComponent" to="." method="_on_GUIComponent_gui_opened"]
+[connection signal="gui_status_changed" from="GUIComponent" to="." method="_on_GUIComponent_gui_status_changed"]
+[connection signal="work_accomplished" from="WorkComponent" to="." method="_on_WorkComponent_work_accomplished"]
+[connection signal="work_done" from="WorkComponent" to="." method="_on_WorkComponent_work_done"]
+[connection signal="work_enabled_changed" from="WorkComponent" to="." method="_on_WorkComponent_work_enabled_changed"]
