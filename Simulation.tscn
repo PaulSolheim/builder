@@ -253,4 +253,5 @@ debug_items = {
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 12 )
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
