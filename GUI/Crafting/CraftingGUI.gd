@@ -80,6 +80,8 @@ func _on_recipe_activated(recipe: Dictionary, output: String) -> void:
 			# amount.
 			if panel.held_item.stack_count >= count:
 				panel.held_item.stack_count -= count
+				# Since we had enough items, make count 0
+				count = 0
 			# If there isn't enough, we reduce the required count by how many there
 			# are, then set the stack to 0.
 			else:
@@ -94,6 +96,10 @@ func _on_recipe_activated(recipe: Dictionary, output: String) -> void:
 			# And we update the count label up to date if it hasn't been
 			# deleted.
 			panel._update_label()
+			
+			# If count is now 0, then we no longer need to check any other panel
+			if count == 0:
+				break
 	
 	# Now that we've consumed all items, we can use the library to instance a
 	# new blueprint for the new item, and add it to the player inventory.

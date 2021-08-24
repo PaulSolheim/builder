@@ -4,6 +4,7 @@ const BARRIER_ID := 1
 const INVISIBLE_BARRIER_ID := 2
 
 export var simulation_speed := 1.0 / 30.0
+export var initial_objects := {}
 
 var _tracker := EntityTracker.new()
 
