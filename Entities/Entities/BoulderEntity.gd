@@ -8,7 +8,7 @@ const REGIONS := [
 ]
 func _ready() -> void:
 	## We set the sprite region to a random region.
-	var index := int(rand_range(0, REGIONS.size() - 1))
+	var index := randi() % REGIONS.size()
 	$Sprite.region_rect = REGIONS[index]
 
 ## Tells the Library what name it should pretend to wear instead of its scene name.

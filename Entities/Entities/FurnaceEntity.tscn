@@ -126,6 +126,7 @@ process_material = SubResource( 3 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Shutdown = SubResource( 4 )
 anims/Work = SubResource( 5 )
+
 [connection signal="gui_opened" from="GUIComponent" to="." method="_on_GUIComponent_gui_opened"]
 [connection signal="gui_status_changed" from="GUIComponent" to="." method="_on_GUIComponent_gui_status_changed"]
 [connection signal="work_accomplished" from="WorkComponent" to="." method="_on_WorkComponent_work_accomplished"]

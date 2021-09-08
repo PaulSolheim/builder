@@ -10,7 +10,7 @@ const REGIONS := [
 
 func _ready() -> void:
 	# Assign random foliage as the region for the sprite.
-	$Foliage.region_rect = REGIONS[int(rand_range(0, REGIONS.size() - 1))]
+	$Foliage.region_rect = REGIONS[randi() % REGIONS.size()]
 	# And flip it horizontally at random for extra variety.
 	# $Foliage.flip_h = rand_range(0, 10) < 5.5
 

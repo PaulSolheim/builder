@@ -98,7 +98,7 @@ func add_to_first_available_inventory(item: BlueprintEntity) -> bool:
 func get_inventory() -> Array:
 	var output := []
 	for panel in panels:
-		if panel.held_item:
+		if is_instance_valid(panel.held_item):
 			output.push_back(panel.held_item)
 	
 	return output

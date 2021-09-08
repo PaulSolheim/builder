@@ -11,4 +11,4 @@ const REGIONS := [
 
 func _ready() -> void:
 	# We set the sprite as one of the four available regions at random.
-	$Sprite.region_rect = REGIONS[int(rand_range(0, REGIONS.size() - 1))]
+	$Sprite.region_rect = REGIONS[randi() % REGIONS.size()]
