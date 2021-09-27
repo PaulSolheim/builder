@@ -16,7 +16,7 @@ func _ready() -> void:
 		receiver.input_direction = 15 ^ source.output_direction
 
 func _setup(blueprint: BlueprintEntity) -> void:
-	source.output_direction = blueprint._power_indicator.output_directions
+	source.output_direction = blueprint.power_direction.output_directions
 	receiver.input_direction = 15 ^ source.output_direction
 
 func _set_stored_power(value: float) -> void:

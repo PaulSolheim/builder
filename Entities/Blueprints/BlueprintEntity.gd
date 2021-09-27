@@ -10,13 +10,13 @@ export(String, MULTILINE) var description := ""
 
 var stack_count := 1
 
-onready var _power_indicator := find_node("PowerDirection")
+onready var power_direction := find_node("PowerDirection")
 
 func rotate_blueprint() -> void:
 	# Don't do anything if there is nothing to rotate
-	if _power_indicator:
+	if power_direction:
 		# Get the current directions flags
-		var directions: int = _power_indicator.output_directions
+		var directions: int = power_direction.output_directions
 
 		# Begin the new one at 0
 		var new_directions := 0
@@ -39,7 +39,7 @@ func rotate_blueprint() -> void:
 			new_directions |= Types.Direction.LEFT
 
 		# Set the new direction, which should set the arrow sprites
-		_power_indicator.output_directions = new_directions
+		power_direction.output_directions = new_directions
 
 # Sets the position and scale of the blueprint to fit inventory panels and hides
 # world-specific sprites like the power direction indicators.
@@ -61,8 +61,8 @@ func display_as_inventory_icon() -> void:
 	modulate = Color.white
 
 	# In the inventory, we need to hide the power indicator if this node has one.
-	if _power_indicator:
-		_power_indicator.hide()
+	if power_direction:
+		power_direction.hide()
 
 
 # This function resets the blueprint's scale, position offset, and power indicators to display 
@@ -70,5 +70,5 @@ func display_as_inventory_icon() -> void:
 func display_as_world_entity() -> void:
 	scale = Vector2.ONE
 	position = Vector2.ZERO
-	if _power_indicator:
-		_power_indicator.show()
+	if power_direction:
+		power_direction.show()
